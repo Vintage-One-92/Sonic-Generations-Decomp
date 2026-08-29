@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonic Generations Web Engine</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #05070a;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        /* Il Canvas dove verrà renderizzato il gioco 3D */
+        #gameCanvas {
+            width: 100vw;
+            height: 100vh;
+            background-color: #000000;
+            display: block;
+        }
+
+        /* Interfaccia utente (HUD) sovrapposta al gioco */
+        #hud {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #00bcff;
+            pointer-events: none; /* Non blocca i click sul gioco */
+        }
+
+        h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.2rem;
+            color: #00bcff;
+        }
+
+        .stat {
+            font-size: 0.9rem;
+            margin: 5px 0;
+            font-family: monospace;
+        }
+
+        /* Barra del Boost stile Sonic Generations */
+        .boost-bar-container {
+            width: 200px;
+            height: 15px;
+            background-color: #222;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #ffaa00;
+            margin-top: 10px;
+        }
+
+        #boostBar {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #ffaa00, #ff5500);
+            transition: width 0.1s linear;
+        }
+
+        /* Pulsante per tornare al menù principale */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #111;
+            border: 1px solid #444;
+            color: #aaa;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .back-btn:hover {
+            color: #fff;
+            border-color: #00bcff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Pulsante per tornare all'Hub principale -->
+    <a href="../index.html" class="back-btn">⬅ Torna all'Hub</a>
+
+    <!-- Schermo di Gioco -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- HUD di Gioco (Velocità, Energia Boost, Posizione) -->
+    <div id="hud">
+        <h2>Sonic2011 Engine</h2>
+        <div class="stat">Stato: <span id="txtStatus" style="color: #00ff00;">Inizializzato</span></div>
+        <div class="stat">Velocità Z: <span id="txtSpeed">0.00</span></div>
+        <div class="stat">Posizione Z: <span id="txtPos">0.00</span></div>
+        <div class="stat">Boost Energy:</div>
+        <div class="boost-bar-container">
+            <div id="boostBar"></div>
+        </div>
+    </div>
+
+    <!-- CARICAMENTO DEI FILE DELL'INFRASTRUTTURA IN SEQUENZA LOGICA -->
+    <script src="../Infrastructure/Sonic2011/physics.js"></script>
+    <script src="../Infrastructure/Sonic2011/input.js"></script>
+    <script src="../Infrastructure/Sonic2011/audio3d.js"></script>
+
+    <!-- LOOP PRINCIPALE DI GIOCO (GAME LOOP) -->
+    <script>
+        const txtSpeed = document.getElementById('txtSpeed');
+        const txtPos = document.getElementById('txtPos');
+        const boostBar = document.getElementById('boostBar');
+
+        let lastTime = performance.now();
+
+        // Il ciclo continuo che gira a 60 FPS nel browser
+        function gameLoop(currentTime) {
+            // Calcola il tempo passato tra un frame e l'altro
+            let deltaTime = (currentTime - lastTime) / 16.666; // Normalizzato a 60Hz
+            lastTime = currentTime;
+
+            // 1. Eseguiamo i calcoli della fisica estratti da HedgePhysics
+            if (typeof updateSonicPhysics === 'function') {
+                updateSonicPhysics(deltaTime);
+            }
+
+            // 2. Aggiorniamo l'interfaccia utente (HUD) con i dati in tempo reale
+            if (typeof sonicState !== 'undefined') {
+                txtSpeed.innerText = sonicState.velocity.z.toFixed(2);
+                txtPos.innerText = sonicState.position.z.toFixed(2);
+                boostBar.style.width = sonicState.boostEnergy + '%';
+            }
+
+            // Continua il loop all'infinito sincronizzato con il monitor
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Avvia il loop non appena la pagina è completamente caricata
+        window.onload = () => {
+            requestAnimationFrame(gameLoop);
+        };
+    </script>
+</body>
+</html>
