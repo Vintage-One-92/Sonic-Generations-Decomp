@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonic Web Hub</title>
+    <style>
+        /* Stile di base per lo sfondo e i testi */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0b0e14;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Contenitore principale */
+        .container {
+            text-align: center;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        /* Titolo principale stile retro-futuristico */
+        h1 {
+            font-size: 3rem;
+            color: #00bcff;
+            text-shadow: 0 0 15px rgba(0, 188, 255, 0.6);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            color: #8a99ad;
+            margin-bottom: 40px;
+        }
+
+        /* Griglia dei bottoni/opzioni */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Stile dei bottoni del menù */
+        .menu-btn {
+            background: linear-gradient(135deg, #161c26 0%, #0f131a 100%);
+            border: 2px solid #232e40;
+            border-radius: 12px;
+            padding: 20px;
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Effetti al passaggio del mouse (Hover) */
+        .menu-btn:hover {
+            border-color: #00bcff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 188, 255, 0.3);
+        }
+
+        .menu-btn span {
+            font-size: 0.9rem;
+            color: #63758d;
+            font-weight: normal;
+            margin-top: 5px;
+        }
+
+        /* Evidenziatore per funzioni principali */
+        .btn-primary {
+            border-color: #00bcff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Sonic Web Hub</h1>
+        <p class="subtitle">Il portale definitivo per i fan di Sonic nel browser</p>
+
+        <div class="menu-grid">
+            <!-- Bottone Demo 2D -->
+            <a href="./mania-demo/index.html" class="menu-btn">
+                🎮 Gioca Sonic Mania Demo
+                <span>Esperienza 2D classica nel browser</span>
+            </a>
+
+            <!-- Bottone Generations 3D -->
+            <a href="./generations-web/index.html" class="menu-btn btn-primary">
+                🌀 Sonic Generations Web
+                <span>Engine 3D ad alte prestazioni (WebAssembly)</span>
+            </a>
+
+            <!-- Bottone Editor Livelli -->
+            <a href="./level-network/index.html" class="menu-btn">
+                🛠️ Creator Network & Level Editor
+                <span>Crea, condividi e gioca i livelli della community</span>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
